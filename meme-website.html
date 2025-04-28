@@ -506,4 +506,18 @@
         </div>
     </footer>
 </body>
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.querySelector(".search-bar input");
+        const memeCards = document.querySelectorAll(".meme-card");
+
+        searchInput.addEventListener("input", () => {
+            const searchText = searchInput.value.toLowerCase();
+            memeCards.forEach(card => {
+                const title = card.querySelector(".meme-title").textContent.toLowerCase();
+                card.style.display = title.includes(searchText) ? "block" : "none";
+            });
+        });
+    });
+</script>
 </html>
