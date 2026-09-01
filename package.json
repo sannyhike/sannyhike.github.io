@@ -1,0 +1,21 @@
+{
+  "name": "farmer-procurement-schedule",
+  "version": "1.0.0",
+  "description": "Smart India Hackathon prototype for farmer procurement scheduling and queue tracking",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "hackathon",
+    "farmer",
+    "procurement",
+    "express",
+    "javascript"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
