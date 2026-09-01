@@ -43,29 +43,29 @@ function getQueueSummaryForBooking(booking) {
   };
 }
 
-// Helper function to create a realistic payment status.
-function getPaymentDetails(booking) {
+// Helper function to get booking status.
+function getBookingStatus(booking) {
   const sorted = getSortedBookings();
   const queuePosition = sorted.findIndex((item) => item.id === booking.id) + 1;
 
-  let paymentStatus = 'Awaiting bank transfer';
-  let transferStatus = 'Waiting for your turn in queue';
+  let bookingStatus = 'Scheduled';
+  let slotStatus = 'Waiting for your turn';
 
   if (queuePosition === 1) {
-    paymentStatus = 'Processing';
-    transferStatus = 'MSP transfer is being prepared';
+    bookingStatus = 'Now serving';
+    slotStatus = 'Please report to the center';
   } else if (queuePosition <= 3) {
-    paymentStatus = 'Ready';
-    transferStatus = 'Bank transfer approved and queued';
+    bookingStatus = 'In queue';
+    slotStatus = 'Coming up soon';
   }
 
-  const amount = Number(booking.quantity) * 25;
+  const amount = Number(booking.quantity);
 
   return {
-    paymentStatus,
-    transferStatus,
-    amountInr: Math.round(amount),
-    procured: queuePosition === 1,
+    bookingStatus,
+    slotStatus,
+    quantityBooked: Math.round(amount),
+    isServing: queuePosition === 1,
   };
 }
 
@@ -123,8 +123,8 @@ app.post('/api/book-slot', (req, res) => {
   booking.estimatedWaitingMinutes = queueSummary.estimatedWaitingMinutes;
   booking.tokenNumber = queueSummary.queuePosition;
   booking.status = queueSummary.status;
-  booking.paymentStatus = 'Awaiting payment';
-  booking.procurementStatus = 'Registered and waiting';
+  booking.bookingStatus = 'Confirmed';
+  booking.slotStatus = 'Awaiting your arrival';
 
   // Add a simulated SMS message for the farmer.
   const smsMessage = `Hello ${booking.name}, your procurement slot is confirmed. Token number ${booking.tokenNumber}. Please report at ${booking.timeWindow} on ${booking.date}.`;
@@ -138,11 +138,11 @@ app.post('/api/book-slot', (req, res) => {
   // Build response object that the frontend can display.
   return res.json({
     success: true,
-    message: 'Slot booked successfully. Please check your queue status.',
+    message: 'Slot booked successfully. Check your queue status below.',
     booking: {
       ...booking,
-      paymentStatus: booking.paymentStatus,
-      procurementStatus: booking.procurementStatus,
+      bookingStatus: booking.bookingStatus,
+      slotStatus: booking.slotStatus,
     },
     smsMessage,
   });
@@ -214,16 +214,15 @@ app.get('/api/payment-status', (req, res) => {
     });
   }
 
-  const paymentDetails = getPaymentDetails(farmer);
+  const bookingStatus = getBookingStatus(farmer);
 
   return res.json({
     success: true,
     farmer: {
       ...farmer,
-      paymentStatus: paymentDetails.paymentStatus,
-      transferStatus: paymentDetails.transferStatus,
-      amountInr: paymentDetails.amountInr,
-      procurementStatus: paymentDetails.procured ? 'Procurement in progress' : 'Awaiting procurement turn',
+      bookingStatus: bookingStatus.bookingStatus,
+      slotStatus: bookingStatus.slotStatus,
+      quantityBooked: bookingStatus.quantityBooked,
     },
   });
 });
@@ -232,7 +231,7 @@ app.get('/api/payment-status', (req, res) => {
 app.get('/api/dashboard-summary', (req, res) => {
   const queue = getSortedBookings().map((booking, index) => {
     const summary = getQueueSummaryForBooking(booking);
-    const paymentDetails = getPaymentDetails(booking);
+    const bookingStatus = getBookingStatus(booking);
 
     return {
       ...booking,
@@ -240,10 +239,9 @@ app.get('/api/dashboard-summary', (req, res) => {
       queuePosition: summary.queuePosition,
       estimatedWaitingMinutes: summary.estimatedWaitingMinutes,
       status: summary.status,
-      paymentStatus: paymentDetails.paymentStatus,
-      transferStatus: paymentDetails.transferStatus,
-      amountInr: paymentDetails.amountInr,
-      procurementStatus: paymentDetails.procured ? 'Procurement in progress' : 'Awaiting procurement turn',
+      bookingStatus: bookingStatus.bookingStatus,
+      slotStatus: bookingStatus.slotStatus,
+      quantityBooked: bookingStatus.quantityBooked,
     };
   });
 

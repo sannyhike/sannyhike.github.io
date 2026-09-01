@@ -4,10 +4,10 @@ This project is a beginner-friendly hackathon prototype for Smart India Hackatho
 
 ## Project goal
 The application helps farmers:
-- book procurement slots
+- book procurement slots for their crops
 - check queue position and waiting time
-- view MSP status and payment simulation
-- receive SMS-style notifications
+- view booking status and slot details
+- receive SMS-style slot confirmation notifications
 
 ## How to run locally
 
