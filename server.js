@@ -114,17 +114,17 @@ app.post('/api/book-slot', (req, res) => {
     createdAt: new Date().toISOString(),
   };
 
-  // Calculate queue position and wait estimates.
-  const queueSummary = getQueueSummaryForBooking({ ...booking, id: bookingId });
+  // Save to memory first.
+  bookings.push(booking);
+
+  // Calculate queue position and wait estimates after adding to queue.
+  const queueSummary = getQueueSummaryForBooking(booking);
   booking.queuePosition = queueSummary.queuePosition;
   booking.estimatedWaitingMinutes = queueSummary.estimatedWaitingMinutes;
   booking.tokenNumber = queueSummary.queuePosition;
   booking.status = queueSummary.status;
   booking.paymentStatus = 'Awaiting payment';
   booking.procurementStatus = 'Registered and waiting';
-
-  // Save to memory.
-  bookings.push(booking);
 
   // Add a simulated SMS message for the farmer.
   const smsMessage = `Hello ${booking.name}, your procurement slot is confirmed. Token number ${booking.tokenNumber}. Please report at ${booking.timeWindow} on ${booking.date}.`;
