@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmer Procurement Schedule</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-block">
+        <span class="brand-badge">Krishi</span>
+        <div>
+          <p class="eyebrow">Procurement scheduling portal</p>
+          <h1>Farmer Support Dashboard</h1>
+        </div>
+      </div>
+      <div class="status-pill">Live queue monitor</div>
+    </header>
+
+    <main class="app-shell">
+      <section class="card form-card">
+        <h2>Farmer Slot Booking</h2>
+        <p class="subtitle">Register for procurement and track your waiting status in real time.</p>
+
+        <form id="bookingForm">
+          <div class="input-group">
+            <label for="name">Farmer Name</label>
+            <input id="name" name="name" type="text" placeholder="Enter full name" required />
+          </div>
+
+          <div class="input-group">
+            <label for="mobileNumber">Mobile Number</label>
+            <input id="mobileNumber" name="mobileNumber" type="tel" placeholder="Enter mobile number" required />
+          </div>
+
+          <div class="input-group">
+            <label for="cropType">Crop Type</label>
+            <select id="cropType" name="cropType" required>
+              <option value="">Select crop</option>
+              <option value="Wheat">Wheat</option>
+              <option value="Rice">Rice</option>
+              <option value="Maize">Maize</option>
+              <option value="Paddy">Paddy</option>
+              <option value="Mustard">Mustard</option>
+              <option value="Cotton">Cotton</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="quantity">Quantity (in quintals)</label>
+            <input id="quantity" name="quantity" type="number" step="0.5" min="1" placeholder="e.g. 15" required />
+          </div>
+
+          <div class="input-group">
+            <label for="date">Procurement Date</label>
+            <input id="date" name="date" type="date" required />
+          </div>
+
+          <div class="input-group">
+            <label for="timeWindow">Preferred Time Window</label>
+            <select id="timeWindow" name="timeWindow" required>
+              <option value="">Select time</option>
+              <option value="08:00 AM - 10:00 AM">08:00 AM - 10:00 AM</option>
+              <option value="10:00 AM - 12:00 PM">10:00 AM - 12:00 PM</option>
+              <option value="12:00 PM - 02:00 PM">12:00 PM - 02:00 PM</option>
+              <option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</option>
+            </select>
+          </div>
+
+          <button type="submit" class="primary-btn">Book My Slot</button>
+        </form>
+
+        <div id="bookingResponse" class="response-box" aria-live="polite"></div>
+      </section>
+
+      <section class="card dashboard-card">
+        <h2>Live Queue Status</h2>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="label">Token Number</span>
+            <strong id="tokenNumberValue">--</strong>
+          </div>
+          <div class="stat-box">
+            <span class="label">Estimated Wait</span>
+            <strong id="estimatedWaitValue">--</strong>
+          </div>
+          <div class="stat-box">
+            <span class="label">Position</span>
+            <strong id="queuePositionValue">--</strong>
+          </div>
+        </div>
+
+        <div class="status-box">
+          <span class="label">Current Farmer Status</span>
+          <strong id="farmerStatusValue">No booking loaded</strong>
+        </div>
+
+        <div class="queue-list-wrapper">
+          <h3>Queue Overview</h3>
+          <ul id="queueList" class="queue-list"></ul>
+        </div>
+      </section>
+
+      <section class="card payment-card">
+        <h2>Payment & Status Tracking</h2>
+
+        <div class="payment-summary">
+          <div>
+            <span class="label">MSP Amount</span>
+            <strong id="mspAmountValue">₹ 0</strong>
+          </div>
+          <div>
+            <span class="label">Payment Status</span>
+            <strong id="paymentStatusValue">Not started</strong>
+          </div>
+        </div>
+
+        <div class="status-box">
+          <span class="label">Procurement Update</span>
+          <strong id="procurementStatusValue">Waiting for queue</strong>
+        </div>
+
+        <div class="sms-panel">
+          <h3>SMS Notifications</h3>
+          <ul id="smsLogList" class="sms-list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
