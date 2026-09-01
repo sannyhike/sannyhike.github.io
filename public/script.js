@@ -23,9 +23,9 @@ const demoQueue = [
     queuePosition: 1,
     estimatedWaitingMinutes: 15,
     status: 'Now serving',
-    amountInr: 2400,
-    paymentStatus: 'Processing',
-    procurementStatus: 'Procurement in progress',
+    quantityBooked: 25,
+    bookingStatus: 'Now serving',
+    slotStatus: 'Please report to center',
     mobileNumber: '9876543210',
   },
   {
@@ -35,9 +35,9 @@ const demoQueue = [
     queuePosition: 2,
     estimatedWaitingMinutes: 25,
     status: 'Waiting in queue',
-    amountInr: 3100,
-    paymentStatus: 'Ready',
-    procurementStatus: 'Awaiting procurement turn',
+    quantityBooked: 30,
+    bookingStatus: 'In queue',
+    slotStatus: 'Coming up soon',
     mobileNumber: '9876543211',
   },
   {
@@ -47,17 +47,17 @@ const demoQueue = [
     queuePosition: 3,
     estimatedWaitingMinutes: 38,
     status: 'Waiting in queue',
-    amountInr: 1800,
-    paymentStatus: 'Ready',
-    procurementStatus: 'Awaiting procurement turn',
+    quantityBooked: 20,
+    bookingStatus: 'In queue',
+    slotStatus: 'Coming up soon',
     mobileNumber: '9876543212',
   },
 ];
 
 const demoLogs = [
-  { time: '08:15 AM', message: 'Rajesh Kumar: Your MSP payment is being processed.' },
-  { time: '08:05 AM', message: 'Sita Devi: Please keep your OTP ready for verification.' },
-  { time: '07:55 AM', message: 'Mohan Lal: Slot confirmed for 10:00 AM.' },
+  { time: '08:15 AM', message: 'Rajesh Kumar: Please report to the procurement center now.' },
+  { time: '08:05 AM', message: 'Sita Devi: Your slot is confirmed for 10:00 AM - 12:00 PM.' },
+  { time: '07:55 AM', message: 'Mohan Lal: Slot booking confirmed. Token number 3 assigned.' },
 ];
 
 async function safeFetchJson(url, fallbackValue) {
@@ -140,17 +140,17 @@ async function refreshDashboard(mobileNumber = '') {
       estimatedWaitValue.textContent = `${farmerRecord.estimatedWaitingMinutes || 0} mins`;
       queuePositionValue.textContent = farmerRecord.queuePosition || '--';
       farmerStatusValue.textContent = farmerRecord.status || 'Waiting';
-      mspAmountValue.textContent = `₹ ${farmerRecord.amountInr || 0}`;
-      paymentStatusValue.textContent = farmerRecord.paymentStatus || 'Not started';
-      procurementStatusValue.textContent = farmerRecord.procurementStatus || 'Waiting for queue';
+      mspAmountValue.textContent = `${farmerRecord.quantityBooked || 0} quintals`;
+      paymentStatusValue.textContent = farmerRecord.bookingStatus || 'Not started';
+      procurementStatusValue.textContent = farmerRecord.slotStatus || 'Waiting for slot';
     } else {
       tokenNumberValue.textContent = '--';
       estimatedWaitValue.textContent = '--';
       queuePositionValue.textContent = '--';
       farmerStatusValue.textContent = 'No booking loaded';
-      mspAmountValue.textContent = '₹ 0';
+      mspAmountValue.textContent = '-- quintals';
       paymentStatusValue.textContent = 'Not started';
-      procurementStatusValue.textContent = 'Waiting for queue';
+      procurementStatusValue.textContent = 'Waiting for slot';
     }
 
     // Render the queue list.
