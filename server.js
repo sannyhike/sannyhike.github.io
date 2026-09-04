@@ -1,9 +1,11 @@
 // Load the Express framework so we can create our API server.
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 
 // Create our app instance.
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 // Store farmer bookings in memory while the server is running.
