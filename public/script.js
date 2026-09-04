@@ -1,3 +1,6 @@
+// Define your live Render backend URL.
+const API_URL = 'https://sannyhike-github-io.onrender.com';
+
 // Grab the booking form and response area.
 const bookingForm = document.getElementById('bookingForm');
 const bookingResponse = document.getElementById('bookingResponse');
@@ -62,7 +65,7 @@ const demoLogs = [
 
 async function safeFetchJson(url, fallbackValue) {
   try {
-    const response = await fetch(url);
+    const response = await fetch(`${API_URL}${url}`);
     if (!response.ok) {
       throw new Error('Request failed');
     }
@@ -88,7 +91,7 @@ bookingForm.addEventListener('submit', async (event) => {
   };
 
   try {
-    const response = await fetch('/api/book-slot', {
+    const response = await fetch(`${API_URL}/api/book-slot`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
